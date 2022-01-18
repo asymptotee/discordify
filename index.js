@@ -13,18 +13,18 @@ client.on('ready', async (bot) => {
     })
 })
 
-client.on('messageCreate', (msg) => {
+client.on('messageCreate', (msg) => { // Лисенер сообщений
     if (msg.author.bot) return
     msg.author.createDM().then(() => {
         msg_controller(msg, client)
     })
 })
 
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', member => { // Лисенер новых пользователей
     create(member.id)
 });
 
-client.on('interactionCreate', async (interaction) => {
+client.on('interactionCreate', async (interaction) => { // Лисенер интеракшенов
     if (interaction.isSelectMenu()) {
         interaction_controller(interaction)
     }

@@ -36,10 +36,11 @@ class EditorMsgHandler {
         const condition = { owner: this.msg.author.id, name: await get_step(this.msg.author.id) }
         const album = await Albums.findOne(condition)
         await Albums.findOneAndUpdate({ condition }, { $pull: { songs: album.songs[this.commands] } })
+        this.msg.author.send(`Трек **${album.songs[this.commands].singer}**-${album.songs[this.commands].song} удален!`)
     }
 
     async search() {
-        let tracks = await axios.get('https://shazam.p.rapidapi.com/search', {
+        const tracks = await axios.get('https://shazam.p.rapidapi.com/search', {
             params: {term: this.commands, locale: 'ru-US', offset: '0', limit: '5'},
             headers: {
             'x-rapidapi-host': 'shazam.p.rapidapi.com',
@@ -55,11 +56,11 @@ class EditorMsgHandler {
         .addComponents(
             new MessageSelectMenu()
                 .setCustomId('select')
-                .setPlaceholder('Тут!')
+                .setPlaceholder('Выбрать')
                 .addOptions(tracks),
             );
 
-        await this.msg.author.send({ content: 'Выберите из списка', components: [row] });
+        await this.msg.author.send({ content: 'Вот, что я нашёл:', components: [row] });
     }
 }
 
