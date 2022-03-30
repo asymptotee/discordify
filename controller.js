@@ -8,8 +8,8 @@ exports.msg_controller = async (msg) => { // Хэндлер команд
     const command = source[0]
     source.shift()
     const step = await get_step(msg.author.id)
+    const Handler = new GeneralMsgHandler(msg, source.join(" "));
     if (step == "default") {
-        const Handler = new GeneralMsgHandler(msg, source.join(" "));
         switch (command) {
             case "!list": // Показать все плейлисты
                 Handler.show()
@@ -31,7 +31,6 @@ exports.msg_controller = async (msg) => { // Хэндлер команд
             break;
         }
     } else {
-        const Handler = new EditorMsgHandler(msg, source.join(" "));
         switch (command) {
             case "!save": // Сохранить и выйти в главное меню
                 Handler.save()
